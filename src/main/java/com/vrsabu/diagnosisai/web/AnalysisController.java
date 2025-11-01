@@ -1,5 +1,6 @@
 package com.vrsabu.diagnosisai.web;
 
+import com.vrsabu.diagnosisai.DTO.MlReportResponse;
 import com.vrsabu.diagnosisai.service.AnalysisService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,23 +21,24 @@ public class AnalysisController {
         this.analysisService = analysisService;
     }
 
-    @PostMapping(path = "/diagnose", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/diagnose/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> diagnose(
+            @PathVariable("id") String id,
             @RequestPart("chief_complaint") MultipartFile chiefComplaint,
             @RequestPart("history_of_present_illness") MultipartFile historyOfPresentIllness,
             @RequestPart("relevant_exam_findings") MultipartFile relevantExamFindings,
             @RequestPart("lab_investigation") MultipartFile labInvestigation,
             @RequestPart("ongoing_treatments") MultipartFile ongoingTreatments
     ) {
-        String result = analysisService.analyze(
+        MlReportResponse result = analysisService.analyze(
                 chiefComplaint,
                 historyOfPresentIllness,
                 relevantExamFindings,
                 labInvestigation,
-                ongoingTreatments
+                ongoingTreatments,
+                id
         );
-        return new ResponseEntity<>(Map.of("Result", result), HttpStatus.OK);
-//        return ResponseEntity.ok(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/health")

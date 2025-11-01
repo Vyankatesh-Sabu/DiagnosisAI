@@ -1,5 +1,6 @@
 package com.vrsabu.diagnosisai.service;
 
+import com.vrsabu.diagnosisai.DTO.MlReportResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -7,11 +8,12 @@ import org.springframework.web.multipart.MultipartFile;
  */
 
 public interface AnalysisService {
-    String analyze(
+    MlReportResponse analyze(
             MultipartFile chiefComplaint,
             MultipartFile historyOfPresentIllness,
             MultipartFile relevantExamFindings,
             MultipartFile labInvestigation,
-            MultipartFile ongoingTreatments
+            MultipartFile ongoingTreatments,
+            String patientId
     );
 }
